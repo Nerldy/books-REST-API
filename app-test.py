@@ -8,7 +8,10 @@ class HelloBooksAPITestCase(unittest.TestCase):
 
 	def test_book_creation(self):
 		"""Test POST /books will create a book"""
-		pass
+		tester = app.test_client(self)
+		response = tester.post('/book/<book_id>', content_type='application/json')
+		self.assertEqual(response.status_code, 201)
+
 
 	def test_get_book(self):
 		"""test GET /books returns all books in JSON format. If no books available it returns {"books": "None"}"""
@@ -17,10 +20,10 @@ class HelloBooksAPITestCase(unittest.TestCase):
 		self.assertEqual(response.status_code, 200)
 
 	def test_get_book_with_id(self):
-		"""test GET /<book_id> is empty and return 404"""
+		"""test GET /<book_id> is empty"""
 		tester = app.test_client(self)
-		response = tester.get('/books/<book_id>', content_type='application/json')
-		self.assertEqual(response.status_code, 404)
+		response = tester.get('/book/<book_id>', content_type='application/json')
+		self.assertEqual(response.status_code, 200)
 
 
 if __name__ == '__main__':
