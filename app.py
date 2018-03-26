@@ -22,7 +22,7 @@ class BookResource(Resource):
 
 		# iterate the books list to search for a book through ID
 		for book in books:
-			if book[book_id] == book_id:
+			if book['book_id'] == book_id:
 				return book
 
 			# return none if book doesn't exists
