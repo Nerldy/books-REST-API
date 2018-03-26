@@ -6,7 +6,7 @@ app = Flask(__name__)
 @app.route('/')
 def index():
 	"""
-	:return: Home page
+	:return: Home page GET /
 	"""
 	return "Hello World"
 
@@ -14,7 +14,7 @@ def index():
 @app.route('/books')
 def get_all_books():
 	"""
-	:return: All books
+	:return: All books GET /books
 	"""
 	return 'get all books'
 
