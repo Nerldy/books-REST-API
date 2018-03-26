@@ -9,7 +9,7 @@ class Books(Resource):
 	"""This class represents /books"""
 
 	def get(self):
-		return {"Hello Books"}
+		return {"book": "Hello Books"}
 
 
 api.add_resource(Books, '/books')
