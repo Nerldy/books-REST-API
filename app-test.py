@@ -12,7 +12,6 @@ class HelloBooksAPITestCase(unittest.TestCase):
 		response = tester.post('/book/<book_id>', content_type='application/json')
 		self.assertEqual(response.status_code, 201)
 
-
 	def test_get_book(self):
 		"""test GET /books returns all books in JSON format. If no books available it returns {"books": "None"}"""
 		tester = app.test_client(self)
