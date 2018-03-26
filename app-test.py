@@ -16,6 +16,12 @@ class HelloBooksAPITestCase(unittest.TestCase):
 		response = tester.get('/books', content_type='application/json')
 		self.assertEqual(response.status_code, 200)
 
+	def test_get_book_with_id(self):
+		"""test GET /<book_id> is empty and return 404"""
+		tester = app.test_client(self)
+		response = tester.get('/books/<book_id>', content_type='application/json')
+		self.assertEqual(response.status_code, 404)
+
 
 if __name__ == '__main__':
 	unittest.main()
