@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, request
 from flask_restful import Resource, Api
 
 app = Flask(__name__)
@@ -11,7 +11,7 @@ class BooksResource(Resource):
 	"""This class represents /books"""
 
 	def get(self):
-		return books
+		return {"books": books}
 
 
 class BookResource(Resource):
@@ -30,9 +30,9 @@ class BookResource(Resource):
 
 	def post(self, book_id=None):
 		"""POST /book/<book_id>"""
-
+		data = request.get_json()
 		# create a book
-		book = {"book_id": book_id, "book_title": "Title of Book"}
+		book = {"book_id": book_id, "book_title": data['book_title']}
 		# add it to the book list
 		books.append(book)
 		return book, 201
