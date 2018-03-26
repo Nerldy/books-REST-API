@@ -26,7 +26,7 @@ class BookResource(Resource):
 				return book
 
 			# return none if book doesn't exists
-			return {"book": book_id}
+			return {"book": None}, 404
 
 	def post(self, book_id=None):
 		"""POST /book/<book_id>"""
@@ -35,7 +35,7 @@ class BookResource(Resource):
 		book = {"book_id": book_id, "book_title": "Title of Book"}
 		# add it to the book list
 		books.append(book)
-		return book
+		return book, 201
 
 
 api.add_resource(BooksResource, '/books')
