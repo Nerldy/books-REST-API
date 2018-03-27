@@ -29,6 +29,11 @@ class BookResource(Resource):
 
 def post(self, book_id=None):
 	"""POST /book/<book_id>"""
+
+	# check if book is exists
+	if next(filter(lambda b: b['book_id'] == book_id, books), None):
+		return {"message": f"book id {book_id} already exists"}, 400
+
 	data = request.get_json()
 	# create a book
 	book = {"book_id": book_id, "book_title": data['book_title']}
@@ -37,8 +42,8 @@ def post(self, book_id=None):
 	return book, 201
 
 
-api.add_resource(BooksResource, '/books')
-api.add_resource(BookResource, '/book/<book_id>')
+api.add_resource(BooksResource, '/v1/books')
+api.add_resource(BookResource, '/v1/book/<book_id>')
 
 if __name__ == '__main__':
 	app.run(debug=1)
