@@ -15,11 +15,22 @@ class User:
 		return self.password
 
 
-class Authentication(User):
-	"""class to authenticate the user"""
+class Book:
+	"""book attributes"""
 
-	def __init__(self, username, password):
-		super().__init__(username, password)
+	def __init__(self, book_id=0, book_title='', isbn_number=0):
+		self.book_id = book_id
+		self.book_title = book_title
+		self.book_isbn = isbn_number
+		self.book_author = []
 
-	def get_authentication(self, username, password):
-		pass
+	def set_book_author(self, first_name, last_name):
+		"""creates a new author"""
+		self.first_name = first_name
+		self.last_name = last_name
+		full_name = f"{self.first_name} {self.last_name} "
+		self.book_author.append(full_name)
+
+	def get_author(self):
+		"""returns book author list"""
+		return self.book_author
