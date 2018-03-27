@@ -6,9 +6,11 @@ class User:
 		self.password = password
 
 	def get_username(self):
+		"""returns username"""
 		return self.username
 
 	def get_password(self):
+		"""returns password"""
 		return self.password
 
 
