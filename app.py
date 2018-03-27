@@ -1,8 +1,13 @@
 from flask import Flask, request
 from flask_restful import Resource, Api
+from flask_jwt import JWT, jwt_required
+from security import identity, authentication
 
 app = Flask(__name__)
+app.secret_key = 'test'
 api = Api(app)
+
+jwt = JWT(app, authentication, identity)
 
 # Books list
 books = []
@@ -11,6 +16,7 @@ books = []
 class AllBooksResource(Resource):
 	"""Handle GET /books"""
 
+	@jwt_required()
 	def get(self):
 		if books:
 			return {"books": books}
