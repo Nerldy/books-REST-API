@@ -1,8 +1,8 @@
 import unittest
-from models import User, Authentication
+from models import User, BookAuthor, Book
 
 
-class ModelsTestCases(unittest.TestCase):
+class UserTestCases(unittest.TestCase):
 	"""this class tests the models"""
 
 	def test_User_has_get_user_method(self):
@@ -14,6 +14,8 @@ class ModelsTestCases(unittest.TestCase):
 		tester = User()
 		result = tester.get_password()
 		self.assertEqual(result, 12345)
+
+
 
 
 if __name__ == '__main__':
