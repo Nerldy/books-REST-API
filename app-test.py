@@ -18,6 +18,8 @@ class HelloBooksAPITestCase(unittest.TestCase):
 		response = tester.get('/books', content_type='application/json')
 		self.assertEqual(response.status_code, 200)
 
+
+
 	def test_get_book_with_id(self):
 		"""test GET /<book_id> is empty"""
 		tester = app.test_client(self)
