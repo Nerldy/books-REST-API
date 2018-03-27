@@ -21,21 +21,20 @@ class BookResource(Resource):
 		""""GET /book/<book_id>"""
 
 		# iterate the books list to search for a book through ID
-		for book in books:
-			if book['book_id'] == book_id:
-				return book
+		book = next(filter(lambda b: b['book_id'] == book_id, books), None)
 
-			# return none if book doesn't exists
-			return {"book": None}, 404
+		# return none if book doesn't exists
+		return {"book": book}, 200 if book else 404
 
-	def post(self, book_id=None):
-		"""POST /book/<book_id>"""
-		data = request.get_json()
-		# create a book
-		book = {"book_id": book_id, "book_title": data['book_title']}
-		# add it to the book list
-		books.append(book)
-		return book, 201
+
+def post(self, book_id=None):
+	"""POST /book/<book_id>"""
+	data = request.get_json()
+	# create a book
+	book = {"book_id": book_id, "book_title": data['book_title']}
+	# add it to the book list
+	books.append(book)
+	return book, 201
 
 
 api.add_resource(BooksResource, '/books')
