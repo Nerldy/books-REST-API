@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, request
 from flask_restful import Resource, Api
 
 app = Flask(__name__)
@@ -22,11 +22,9 @@ class SingleBookResource(Resource):
 	"""Handle GET, PUT, DELETE, POST /book"""
 
 	def get(self, book_id):
-
-		for book in books:
-			if book["book_id"] == book_id:
-				return {"book_id": book[book_id]}, 200
-			return {"message": f"Book with id {book_id} not found"}, 404
+		"""handles GET /boo"""
+		book = next(filter(lambda x: x["book_id"] == book_id, books), None)
+		return {'book': book}, 200 if book else 404
 
 	def post(self, book_id):
 
@@ -34,7 +32,8 @@ class SingleBookResource(Resource):
 			if book["book_id"] == book_id:
 				return {"message": f"Book with id {book_id} already exists."}, 400
 
-		book = {"book_id": book_id}
+		data = request.get_json()
+		book = {"book_id": book_id, "title": data['title']}
 		books.append(book)
 		return book, 201
 
@@ -42,6 +41,18 @@ class SingleBookResource(Resource):
 		global books
 		books = list(filter(lambda x: x["book_id"] != book_id, books))
 		return {"message": "book deleted"}
+
+	def put(self, book_id):
+		data = request.get_json()
+		book = next(filter(lambda x: x["book_id"] == book_id, books), None)
+
+		if book is None:
+			book = {"book_id": book_id, "title": data['title']}
+			books.append(book)
+		else:
+			book.update(data)
+
+		return book
 
 
 # API Resources
