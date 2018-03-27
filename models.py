@@ -1,7 +1,8 @@
 class User:
 	"""creates user"""
 
-	def __init__(self, username='John Doe', password=12345):
+	def __init__(self, _id=None, username='John Doe', password=12345):
+		self.id = _id
 		self.username = username
 		self.password = password
 
