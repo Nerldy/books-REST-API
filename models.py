@@ -23,6 +23,8 @@ class Book:
 		self.book_title = book_title
 		self.book_isbn = isbn_number
 		self.book_author = []
+		self.first_name = None
+		self.last_name = None
 
 	def set_book_author(self, first_name, last_name):
 		"""creates a new author"""
