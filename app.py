@@ -2,49 +2,61 @@ from flask import Flask, request
 from flask_restful import Resource, Api
 
 app = Flask(__name__)
-app.secret_key = 'secret'
 api = Api(app)
 
+# Books list
 books = []
 
 
-class BooksResource(Resource):
-	"""This class represents /books"""
+class AllBooksResource(Resource):
+	"""Handle GET /books"""
 
 	def get(self):
-		return {"books": books}
+		if books:
+			return {"books": books}
+
+		return {"books": "No books found"}
 
 
-class BookResource(Resource):
-	"""This class represents /books/<book_id>"""
+class SingleBookResource(Resource):
+	"""Handle GET, PUT, DELETE, POST /book"""
 
-	def get(self, book_id=None):
-		""""GET /book/<book_id>"""
+	def get(self, book_id):
+		"""handles GET /boo"""
+		book = next(filter(lambda x: x["book_id"] == book_id, books), None)
+		return {'book': book}, 200 if book else 404
 
-		# iterate the books list to search for a book through ID
-		book = next(filter(lambda b: b['book_id'] == book_id, books), None)
+	def post(self, book_id):
 
-		# return none if book doesn't exists
-		return {"book": book}, 200 if book else 404
+		for book in books:
+			if book["book_id"] == book_id:
+				return {"message": f"Book with id {book_id} already exists."}, 400
+
+		data = request.get_json()
+		book = {"book_id": book_id, "title": data['title']}
+		books.append(book)
+		return book, 201
+
+	def delete(self, book_id):
+		global books
+		books = list(filter(lambda x: x["book_id"] != book_id, books))
+		return {"message": "book deleted"}
+
+	def put(self, book_id):
+		data = request.get_json()
+		book = next(filter(lambda x: x["book_id"] == book_id, books), None)
+
+		if book is None:
+			book = {"book_id": book_id, "title": data['title']}
+			books.append(book)
+		else:
+			book.update(data)
+
+		return book
 
 
-def post(self, book_id=None):
-	"""POST /book/<book_id>"""
+# API Resources
+api.add_resource(AllBooksResource, '/books')
+api.add_resource(SingleBookResource, '/book/<book_id>')
 
-	# check if book is exists
-	if next(filter(lambda b: b['book_id'] == book_id, books), None):
-		return {"message": f"book id {book_id} already exists"}, 400
-
-	data = request.get_json()
-	# create a book
-	book = {"book_id": book_id, "book_title": data['book_title']}
-	# add it to the book list
-	books.append(book)
-	return book, 201
-
-
-api.add_resource(BooksResource, '/v1/books')
-api.add_resource(BookResource, '/v1/book/<book_id>')
-
-if __name__ == '__main__':
-	app.run(debug=1)
+app.run(port=5000, debug=1)
